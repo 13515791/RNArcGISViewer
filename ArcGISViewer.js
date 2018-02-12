@@ -21,7 +21,7 @@ export default class ArcGISViewer extends Component {
                 </MapView>
                 <View style={styles.button}>
                     <Button>
-                        <Text>testl</Text>
+                        <Text>test2</Text>
                     </Button>
                 </View>
             </View>
