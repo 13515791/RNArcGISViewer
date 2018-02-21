@@ -46,6 +46,10 @@ class MapView extends React.Component {
         MapViewManager.addGraphics(findNodeHandle(this),graphics,overlayId);
     }
 
+    mapLoad() {
+        MapViewManager.mapLoad(findNodeHandle(this));
+    }
+
     // method returns a Promise
     identifyGraphicsOverlays(overlayId,screenPoint, tolerance, returnPopupsOnly, maximumResults) {
         return MapViewManager.identifyGraphicsOverlays(findNodeHandle(this), overlayId, screenPoint, tolerance, returnPopupsOnly, maximumResults);
@@ -55,6 +59,8 @@ class MapView extends React.Component {
         if (!this.props.onTap) { return; }
         this.props.onTap(event.nativeEvent);
     }
+
+
 
     componentWillReceiveProps(newProps) {
         // No change in graphicsOverlays

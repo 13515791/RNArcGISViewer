@@ -42,7 +42,7 @@ RCT_EXPORT_METHOD(changeGraphicsOverlays:(nonnull NSNumber *)reactTag
     RCTMapView *mapView = (RCTMapView *)viewRegistry[reactTag];
     
     for(NSString *key in toAddOrUpdate) {
-      AGSGraphicsOverlay *o = [RCTConvert AGSGraphicsOverlay:toAddOrUpdate[key]];      
+      AGSGraphicsOverlay *o = [RCTConvert AGSGraphicsOverlay:toAddOrUpdate[key]];
       [mapView updateGraphicsOverlay:o forKey:key];
     }
     
@@ -64,6 +64,15 @@ RCT_EXPORT_METHOD(addGraphics:(nonnull NSNumber *)reactTag
   }];
 }
 
+RCT_EXPORT_METHOD(mapLoad:(nonnull NSNumber *)reactTag){
+  [_bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,UIView *> *viewRegistry) {
+    RCTMapView *mapView = (RCTMapView *)viewRegistry[reactTag];
+    [mapView mapLoad];
+    //NSArray <AGSGraphic *> *graphicsToAdd = [RCTConvert AGSGraphics:graphics];
+    //[mapView addGraphics:graphicsToAdd toOverlay:overlayId];
+  }];
+}
+
 
 RCT_EXPORT_METHOD(identifyGraphicsOverlays:(nonnull NSNumber *)reactTag
                   overlayId:(NSString *)overlayId
@@ -76,7 +85,7 @@ RCT_EXPORT_METHOD(identifyGraphicsOverlays:(nonnull NSNumber *)reactTag
   [_bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,UIView *> *viewRegistry) {
     RCTMapView *mapView = (RCTMapView *)viewRegistry[reactTag];
     [mapView identifyGraphicsOverlays:overlayId
-                        screenPoint:screenPoint
+                          screenPoint:screenPoint
                             tolerance:tolerance
                      returnPopupsOnly:returnPopupsOnly
                        maximumResults:maximumResults
@@ -88,3 +97,4 @@ RCT_EXPORT_METHOD(identifyGraphicsOverlays:(nonnull NSNumber *)reactTag
 RCT_EXPORT_VIEW_PROPERTY(onTap, RCTBubblingEventBlock);
 
 @end
+

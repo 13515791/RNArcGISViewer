@@ -1,0 +1,10 @@
+{
+  "initialextent": [{"x":12929200,"y":4815671}],
+  "basemap": [
+    {
+      "name":"在线底图",
+      "url":"https://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer",
+      "type":"online"
+    }
+  ]
+}

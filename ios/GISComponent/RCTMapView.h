@@ -38,7 +38,10 @@
                        resolver:(RCTPromiseResolveBlock)resolve
                        rejecter:(RCTPromiseRejectBlock)reject;
 
+-(void)mapLoad;
+
 @property (nonatomic, copy) RCTBubblingEventBlock onTap;
 
 
 @end
+

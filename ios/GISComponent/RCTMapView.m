@@ -50,20 +50,24 @@
   if(_viewPointCenter) {
     coord = _viewPointCenter.toCLLocationCoordinate2D;
   }
-  _mapView.map = [AGSMap mapWithBasemapType:AGSBasemapTypeDarkGrayCanvasVector
-                                   latitude:coord.latitude
-                                  longitude:coord.longitude
-                              levelOfDetail:2];
+//  _mapView.map = [AGSMap mapWithBasemapType:AGSBasemapTypeDarkGrayCanvasVector
+//                                   latitude:coord.latitude
+//                                  longitude:coord.longitude
+//                              levelOfDetail:2];
+  _mapView.map=[[AGSMap alloc] init];
+  AGSArcGISTiledLayer *tile=[[AGSArcGISTiledLayer alloc] initWithURL:[NSURL URLWithString:@"https://map.geoq.cn/arcgis/rest/services/ChinaOnlineCommunity/MapServer"]];
+  [_mapView.map.operationalLayers addObject:tile];
+  _mapView.attributionTextVisible=false;
   _mapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   _mapView.touchDelegate = self;
-
+  
   //inserting a default graphics overlay
   for(NSString *overlayId in _graphicsOverlays) {
-      [_mapView.graphicsOverlays addObject:_graphicsOverlays[overlayId]];
+    [_mapView.graphicsOverlays addObject:_graphicsOverlays[overlayId]];
   }
   
   [self addSubview:_mapView];
-
+  
   [self updateCalloutView];
   [self layoutSubviews];
 }
@@ -80,10 +84,17 @@
   [_mapView layoutSubviews];
 }
 
-
+//设置地图中心点
 -(void)setViewPointCenter:(AGSPoint *)center{
+  if (!_mapView) {
+    [self createMapIfNeeded];
+  }
+  
   _viewPointCenter = center;
   [_mapView setViewpointCenter:_viewPointCenter completion:nil];
+  _mapView.attributionTextVisible=false;
+  //AGSArcGISTiledLayer *tile=[[AGSArcGISTiledLayer alloc] initWithURL:[NSURL URLWithString:@"https://map.geoq.cn/arcgis/rest/services/ChinaOnlineCommunity/MapServer"]];
+  //[_mapView.map.operationalLayers addObject:tile];
 }
 
 
@@ -181,32 +192,32 @@
                    returnPopupsOnly:returnPopupsOnly
                      maximumResults:maximumResults
                          completion:^(AGSIdentifyGraphicsOverlayResult * _Nonnull identifyResult)
-  {
-    if([welf rejectWithError:identifyResult.error rejector:reject]) {
-      return;
-    }
-    
-    NSMutableArray *result = [NSMutableArray arrayWithCapacity:identifyResult.graphics.count];
-    for(AGSGraphic *g in identifyResult.graphics) {
-      NSError *error = nil;
-      id geometryJson = [g.geometry toJSON:&error];
-      if([welf rejectWithError:error rejector:reject]) {
-        return;
-      }
-
-      id symbolJson = [g.symbol toJSON:&error];
-      if([welf rejectWithError:error rejector:reject]) {
-        return;
-      }
-      
-      [result addObject:@{
-                         @"geometry": geometryJson,
-                         @"symbol": symbolJson,
-                         @"attributes": g.attributes
-                         }];
-    }
-    resolve(result);
-  }];
+   {
+     if([welf rejectWithError:identifyResult.error rejector:reject]) {
+       return;
+     }
+     
+     NSMutableArray *result = [NSMutableArray arrayWithCapacity:identifyResult.graphics.count];
+     for(AGSGraphic *g in identifyResult.graphics) {
+       NSError *error = nil;
+       id geometryJson = [g.geometry toJSON:&error];
+       if([welf rejectWithError:error rejector:reject]) {
+         return;
+       }
+       
+       id symbolJson = [g.symbol toJSON:&error];
+       if([welf rejectWithError:error rejector:reject]) {
+         return;
+       }
+       
+       [result addObject:@{
+                           @"geometry": geometryJson,
+                           @"symbol": symbolJson,
+                           @"attributes": g.attributes
+                           }];
+     }
+     resolve(result);
+   }];
 }
 
 -(BOOL)rejectWithError:(NSError *)error rejector:(RCTPromiseRejectBlock)reject {
@@ -215,6 +226,15 @@
     return YES;
   }
   return NO;
+}
+
+-(void)mapLoad{
+//  UIAlertView *alert = [[UIAlertView alloc] init];
+//  alert.message=@"fsfdsfd";
+//  [alert show];
+  
+  AGSArcGISTiledLayer *tile=[[AGSArcGISTiledLayer alloc] initWithURL:[NSURL URLWithString:@"https://map.geoq.cn/arcgis/rest/services/ChinaOnlineCommunity/MapServer"]];
+  [_mapView.map.operationalLayers addObject:tile];
 }
 
 
@@ -229,3 +249,4 @@
 }
 
 @end
+

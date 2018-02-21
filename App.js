@@ -9,11 +9,13 @@ import {
   Platform,
   StyleSheet,
   Text,
+    NavigatorIOS,
   View,
     NativeModules,
 } from 'react-native';
 
 import MapView from './ArcGISReactComponents/MapView';
+import SampleContainer from './AppComponents/SampleContainer'
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -27,9 +29,13 @@ export default class App extends Component<Props> {
   render() {
       //let {graphicsOverlays} = this.state;
     return (
-      <View style={styles.container}>
-          <MapView ></MapView>
-      </View>
+        <NavigatorIOS
+            style = {styles.container}
+            initialRoute = {{
+                title: 'ArcGIS RN Sample',
+                component: SampleContainer
+            }}
+        />
     );
   }
 }

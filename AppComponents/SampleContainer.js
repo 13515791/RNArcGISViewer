@@ -74,6 +74,8 @@ export default class SampleContainer extends Component {
                                    onSearchItemPress={this._onSearchItemPress}/>
         </View>
         );
+
+        this._mapView.mapLoad();
     }
 
     // Helper method ----->
