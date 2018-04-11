@@ -233,7 +233,7 @@
 //  alert.message=@"fsfdsfd";
 //  [alert show];
   
-  AGSArcGISTiledLayer *tile=[[AGSArcGISTiledLayer alloc] initWithURL:[NSURL URLWithString:@"https://map.geoq.cn/arcgis/rest/services/ChinaOnlineCommunity/MapServer"]];
+  AGSArcGISTiledLayer *tile=[[AGSArcGISTiledLayer alloc] initWithURL:[NSURL URLWithString:@"https://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetGray/MapServer"]];
   [_mapView.map.operationalLayers addObject:tile];
 }
 
